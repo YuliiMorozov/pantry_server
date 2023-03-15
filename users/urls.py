@@ -3,7 +3,8 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from users import views
 
 urlpatterns = [
-    path('users/', views.UserRegister.as_view()),
+    path('api/v1/register/', views.UserRegister.as_view()),
+    path('api/v1/profile/<int:pk>/', views.UserEditProfile.as_view()),
     path('users/<int:pk>/', views.UserDetail.as_view()),
 ]
 
