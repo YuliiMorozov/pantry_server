@@ -10,11 +10,12 @@ from rest_framework import generics
 
 
 class UserRegister(generics.CreateAPIView):
+    permission_classes = [permissions.AllowAny]
     serializer_class = UserSerializer
 
 
 # class UserRegister(APIView):
-#     permission_classes = [permissions.AllowAny]
+    # permission_classes = [permissions.AllowAny]
 
 #     def post(self, request, format=None):
         
