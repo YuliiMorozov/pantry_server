@@ -1,8 +1,8 @@
 from django.contrib.auth.models import User
 from .serializers import UserSerializer
+from rest_framework import generics
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from rest_framework import generics
 
 
 class UserRegister(generics.CreateAPIView):

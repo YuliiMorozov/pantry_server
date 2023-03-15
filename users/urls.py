@@ -5,19 +5,6 @@ from users import views
 urlpatterns = [
     path('api/v1/register/', views.UserRegister.as_view()),
     path('api/v1/profile/<int:pk>/', views.UserEditProfile.as_view()),
-    path('users/<int:pk>/', views.UserDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
-
-
-
-
-# from rest_framework import routers
-# from .views import UserViewSet
-# from django.urls import path
-
-# router = routers.DefaultRouter()
-# router.register('api/users', UserViewSet, 'users')
-
-# urlpatterns = router.urls
