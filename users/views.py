@@ -11,5 +11,8 @@ class UserSignUp(generics.CreateAPIView):
 
 class UserEditProfile(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = User.objects.all()    
+    # queryset = User.objects.all()    
     serializer_class = UserSerializer
+
+    def get_queryset(self, pk):
+        return User.objects.get(pk=pk)  
