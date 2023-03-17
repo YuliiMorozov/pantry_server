@@ -5,12 +5,12 @@ from rest_framework.permissions import IsAuthenticated
 
 
 class AddIngredient(generics.CreateAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     serializer_class = IngredientSerializer
 
 
 class CreateCake(generics.CreateAPIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     # queryset = User.objects.all()    
     serializer_class = CakeSerializer
 
