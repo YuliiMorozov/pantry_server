@@ -8,27 +8,42 @@ from .validators import (
 
 
 class UserSerializer(serializers.ModelSerializer):
+    
     class Meta:
         model = User
         fields = ['id', 'email', 'username', 'password']
+        # do not return password after create new user
         extra_kwargs = {
             'password': {'write_only': True}
         }
-    # username = serializers.CharField(validators=[validate_username])
-    # email = serializers.CharField(validators=[validate_email])
+    
+    username = serializers.CharField(validators=[validate_username])
+    email = serializers.CharField(validators=[validate_email])
+    password = serializers.CharField(
+        write_only=True,
+        min_length = 8,
+        max_length = 16,
+        style={'input_type': 'password'},
+    )
+# ???
+    def create(self, validated_data):
+        user = User(
+            email=self.validated_data['email'],
+            username=self.validated_data['username'],
+        )
+        password=self.validated_data['password']
 
-    # password = serializers.CharField(
-    #     write_only=True,
-    #     min_length = 8,
-    #     max_length = 16,
-    #     style={'input_type': 'password'},
-    # )
+        user.set_password(password)
+        user.save()
+
+        return user
+
+
+
+
         
 
-    # id = 
-    # username = 
-    # email = 
-    # password = 
+    
 
 
 
