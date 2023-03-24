@@ -13,8 +13,8 @@ class AddIngredient(generics.ListAPIView):
 
 
 class CreateCake(generics.CreateAPIView):
-    # permission_classes = [IsAuthenticated]
-    # queryset = User.objects.all()    
+    permission_classes = [IsAuthenticated]
+    queryset = User.objects.all()    
     serializer_class = CakeSerializer
 
 #     def get_queryset(self, pk):
