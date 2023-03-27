@@ -19,13 +19,12 @@ class UserSerializer(serializers.ModelSerializer):
     
     username = serializers.CharField(validators=[validate_username])
     email = serializers.CharField(validators=[validate_email])
-    password = serializers.CharField(
+    password = serializers.CharField(                                
+        validators=[validate_password],
         write_only=True,
-        min_length = 8,
-        max_length = 16,
-        style={'input_type': 'password'},
+        style={'input_type': 'password'},    
     )
-# ???
+
     def create(self, validated_data):
         user = User(
             email=self.validated_data['email'],

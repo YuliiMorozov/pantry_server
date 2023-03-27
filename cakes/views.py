@@ -1,15 +1,21 @@
 from django.contrib.auth.models import User
 
 from .models import Ingredient
-from .serializers import IngredientSerializer, CakeSerializer
+from .serializers import Ingredient_CakeSerializer, IngredientSerializer, CakeSerializer
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 
-class AddIngredient(generics.ListAPIView):
+class AddIngredient(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = Ingredient.objects.all()    
-    serializer_class = IngredientSerializer
+    # serializer_class = IngredientSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return IngredientSerializer
+        else:
+            return Ingredient_CakeSerializer
 
 
 class CreateCake(generics.CreateAPIView):
