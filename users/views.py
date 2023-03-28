@@ -2,26 +2,18 @@ from django.contrib.auth.models import User
 from .serializers import UserSerializer
 from rest_framework import generics, status
 from rest_framework.views import APIView 
-from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.response import Response
 from django.contrib.auth import authenticate
 
+
 class UserSignUp(generics.CreateAPIView):
-    permission_classes = [AllowAny, ]
     serializer_class = UserSerializer
 
 
-# class UserSignIn(generics.CreateAPIView):
-#     permission_classes = [AllowAny, ]
-#     serializer_class = UserSerializer
-
-
-
 class UserSignIn(APIView):
-    permission_classes = [AllowAny, ]
     serializer_class = UserSerializer
 
     def post(self, request):
@@ -38,38 +30,26 @@ class UserSignIn(APIView):
             })
         else:
             return Response({'error': 'Incorrect credentials'}, status=status.HTTP_400_BAD_REQUEST)
-        
 
-            #     user = User.objects.filter(username=username).first()
 
-    #     if user is None:
-    #         raise AuthenticationFailed('User not found!')
-        
-    #     if not user.check_password(password):
-    #         raise AuthenticationFailed('Incorrect password!')
-        
-    #     return Response({
-    #         'message': 'success'
-    #     })
-        
 class UserSignOut(APIView):
-    permission_classes = [IsAuthenticated, ]
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request):
-        refresh_token = request.data.get('refresh_token')
         try:
+            refresh_token = request.data["refresh_token"]
             token = RefreshToken(refresh_token)
             token.blacklist()
+
         except:
-            return Response({"message": "Invalid token"}, status=400)
+            return Response({"message": "Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
         
-        return Response({"message": "Successfully logged out"})
+        return Response({"message": "Successfully logged out"}, status=status.HTTP_200_OK)
 
 
 
 class UserEditProfile(generics.RetrieveUpdateDestroyAPIView):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated, IsAdminUser, ]
+    permission_classes = (IsAuthenticated, IsAdminUser, )
     # queryset = User.objects.all()    
     serializer_class = UserSerializer
 
@@ -78,3 +58,17 @@ class UserEditProfile(generics.RetrieveUpdateDestroyAPIView):
         queryset = User.objects.filter(id=pk)
         return queryset
     
+
+# class ForgotPasswordView(APIView):
+#     permission_classes = [AllowAny,]
+    
+#     def post(self, request):
+#         email = request.data.get('email')
+#         if not email:
+#             return Response({'error': 'Email is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+#         user = User.objects.filter(email=email).first()
+#         if not user:
+#             return Response({'error': 'User does not exist with this email.'}, status=status.HTTP_400_BAD_REQUEST)
+
+#         return Response({'message': 'Email sent successfully.'}, status=status.HTTP_200_OK)
